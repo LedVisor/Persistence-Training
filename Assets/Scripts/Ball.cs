@@ -27,10 +27,17 @@ public class Ball : MonoBehaviour
             velocity += Vector3.right * 0.2f * UnityEngine.Random.Range(-1,1);
         }
 
-        //max velocity
-        if (velocity.magnitude > 3.0f)
+        if (Vector3.Dot(velocity.normalized, Vector3.right) < 0.1f)
         {
-            velocity = velocity.normalized * 3.0f;
+            velocity += velocity.y > 0 ? Vector3.up * 0.2f : Vector3.down * 0.2f;
+         
+        }
+
+        //max velocity
+        var maxVelocity = 3 + (GameManager.Instance.wave-1);
+        if (velocity.magnitude > maxVelocity)
+        {
+            velocity = velocity.normalized * maxVelocity;
         }
 
         m_Rigidbody.velocity = velocity;

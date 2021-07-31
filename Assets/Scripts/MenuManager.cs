@@ -10,9 +10,7 @@ using UnityEditor;
 
 public class MenuManager : MonoBehaviour
 {
-
     public TMP_InputField nameInput;
-
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +28,6 @@ public class MenuManager : MonoBehaviour
         GameManager.Instance.playerName = text;
     }
 
-
     public void StartNew()
     {
         SceneManager.LoadScene(1);
@@ -46,5 +43,4 @@ public class MenuManager : MonoBehaviour
         Application.Quit(); // original code to quit Unity player
 #endif
     }
-
 }

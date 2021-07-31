@@ -503,10 +503,14 @@ MonoBehaviour:
   BrickPrefab: {fileID: 897975713663390409, guid: 63f25b9733d2bcd4fa2ff6de1264c739, type: 3}
   LineCount: 6
   Ball: {fileID: 177912862}
+  Paddle: {fileID: 97436041}
   ScoreText: {fileID: 188020406}
   HighScoreText: {fileID: 2078529056}
+  brickCount: 0
+  wave: 0
   GameOverText: {fileID: 474497238}
   StartText: {fileID: 1130026624}
+  initialPos: {x: 0, y: 0, z: 0}
 --- !u!1 &455529321
 GameObject:
   m_ObjectHideFlags: 0

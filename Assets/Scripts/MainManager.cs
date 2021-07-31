@@ -11,9 +11,12 @@ public class MainManager : MonoBehaviour
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
+    public GameObject Paddle;
 
     public Text ScoreText;
     public Text HighScoreText;
+
+    public int brickCount;
 
     public GameObject GameOverText, StartText;
 
@@ -21,6 +24,7 @@ public class MainManager : MonoBehaviour
     private int m_Points;
     
     private bool m_GameOver = false;
+    public Vector3 initialPos;
 
 
 
@@ -35,10 +39,21 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        const float step = 0.6f;
+        GameManager.Instance.wave = 1;
+        initialPos = Ball.transform.localPosition; // initial offset from paddle
+        Setup(GameManager.Instance.wave);
+        ShowHighScore();
+        GameOverText.SetActive(false);
+    }
+
+    private void Setup(int wave)
+    {
+        const float initialStep = 0.6f;
+        float step = initialStep + (wave-1) * 0.2f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-        
-        int[] pointCountArray = new [] {1,1,2,2,5,5};
+
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
+        brickCount = 0;
         for (int i = 0; i < LineCount; ++i)
         {
             for (int x = 0; x < perLine; ++x)
@@ -47,12 +62,11 @@ public class MainManager : MonoBehaviour
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
                 brick.PointValue = pointCountArray[i];
                 brick.onDestroyed.AddListener(AddPoint);
+                brickCount++;
             }
         }
 
-        ShowHighScore();
         StartText.SetActive(true);
-        GameOverText.SetActive(false);
     }
 
     private void ShowHighScore()
@@ -69,7 +83,7 @@ public class MainManager : MonoBehaviour
                 m_Started = true;
                 float randomDirection = Random.Range(-1.0f, 1.0f);
 
-                randomDirection = 0;
+               
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
 
@@ -97,6 +111,26 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+        brickCount--;
+        if(brickCount ==0) // end of wave
+        {
+            m_Started = false;
+            attachBallToPaddle();
+            GameManager.Instance.wave++;
+            Setup(GameManager.Instance.wave);
+        }
+    }
+
+    void attachBallToPaddle()
+    {
+        if (Ball.transform.parent ==null) // has been in play
+        {
+            Ball.velocity = Vector3.zero; // keep ball still
+            Ball.angularVelocity = Vector3.zero;
+            Ball.transform.SetParent(Paddle.transform);
+            //Ball.transform.SetPositionAndRotation(Paddle.transform.position + initialPos, Quaternion.identity);
+            Ball.transform.SetPositionAndRotation(Paddle.transform.position, Quaternion.identity);
+        }
     }
 
     public void GameOver()
