@@ -20,9 +20,11 @@ public class Ball : MonoBehaviour
         velocity += velocity.normalized * 0.01f;
         
         //check if we are not going totally vertically as this would lead to being stuck, we add a little vertical force
+        // >>>>>>>>> Shouldn't this be horizontal?
         if (Vector3.Dot(velocity.normalized, Vector3.up) < 0.1f)
         {
-            velocity += velocity.y > 0 ? Vector3.up * 0.5f : Vector3.down * 0.5f;
+            //velocity += velocity.y > 0 ? Vector3.up * 0.5f : Vector3.down * 0.5f;
+            velocity += Vector3.right * 0.2f * UnityEngine.Random.Range(-1,1);
         }
 
         //max velocity
