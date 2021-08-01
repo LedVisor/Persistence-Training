@@ -13,7 +13,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
     public GameObject Paddle;
 
-    public Text ScoreText;
+    public Text ScoreText, LevelText;
     public Text HighScoreText;
 
     public int brickCount;
@@ -67,6 +67,8 @@ public class MainManager : MonoBehaviour
         }
 
         StartText.SetActive(true);
+        LevelText.text = "Level " + wave;
+        LevelText.enabled = true;
     }
 
     private void ShowHighScore()
@@ -90,6 +92,7 @@ public class MainManager : MonoBehaviour
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
                 StartText.SetActive(false);
+                LevelText.enabled = false;
 
             }
         }

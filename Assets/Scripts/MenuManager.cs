@@ -21,6 +21,10 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Exit();
+        if (Input.GetKeyDown(KeyCode.Return))
+            StartNew();
     }
 
     public void UpdateName(string text)
